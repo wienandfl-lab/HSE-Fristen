@@ -1,72 +1,51 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fristenrechner Referendariat</title>
-<meta name="description" content="Fristenrechner der Heidelberg School of Education: Wann musst Du Deine Masterarbeit anmelden und abgeben, um im Januar ins Referendariat zu starten?">
-<style>
-  :root {
-    --bg: #f5f6f8;
-    --card: #ffffff;
-    --text: #1d2330;
-    --muted: #5b6475;
-    --border: #d9dde5;
-    --accent: #003a70;
-    --green-bg: #e6f4ea; --green-border: #2e7d32; --green-text: #1b5e20;
-    --yellow-bg: #fff8e1; --yellow-border: #e0a800; --yellow-text: #6d4c00;
-    --red-bg: #fdecea; --red-border: #c62828; --red-text: #8e1c1c;
-  }
-  @media (prefers-color-scheme: dark) {
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fristenrechner Referendariat</title>
+  <meta name="description" content="Fristenrechner der Heidelberg School of Education: Wann musst Du Deine Masterarbeit anmelden und abgeben, um im Januar ins Referendariat zu starten?">
+  <style>
     :root {
-      --bg: #14171d; --card: #1e232b; --text: #e8ebf0; --muted: #a3abb8;
-      --border: #333a46; --accent: #7fb2ea;
-      --green-bg: #17301d; --green-border: #4caf50; --green-text: #b9e6bd;
-      --yellow-bg: #332a0d; --yellow-border: #f0c040; --yellow-text: #f3dd9a;
-      --red-bg: #3a1a1a; --red-border: #ef5350; --red-text: #f5b5b3;
+      --bg: #f5f6f8; --card: #fff; --text: #1d2330; --muted: #5b6475;
+      --border: #d9dde5; --accent: #003a70;
+      --green-bg: #e6f4ea; --green: #2e7d32;
+      --yellow-bg: #fff8e1; --yellow: #b07d00;
+      --red-bg: #fdecea; --red: #c62828;
     }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  }
-  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
-  h1 { font-size: 1.6rem; margin: 0 0 6px; color: var(--accent); }
-  h2 { font-size: 1.15rem; margin: 0 0 12px; }
-  .lead { color: var(--muted); margin: 0 0 24px; }
-  .card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 20px; margin-bottom: 20px;
-  }
-  label { display: block; font-weight: 600; margin-bottom: 6px; }
-  select, input[type=date] {
-    width: 100%; font: inherit; color: inherit; background: var(--bg);
-    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
-  }
-  select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .deadlines { list-style: none; padding: 0; margin: 0; }
-  .deadlines li {
-    display: flex; justify-content: space-between; gap: 12px;
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-  }
-  .deadlines li:last-child { border-bottom: 0; }
-  .deadlines strong { white-space: nowrap; }
-  .hint { color: var(--muted); font-size: .9rem; margin: 8px 0 0; }
-  .result {
-    margin-top: 14px; padding: 14px 16px; border-radius: 8px;
-    border-left: 6px solid; display: none;
-  }
-  .result.show { display: block; }
-  .result p { margin: 0 0 8px; }
-  .result p:last-child { margin-bottom: 0; }
-  .result .tag { font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .05em; }
-  .green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green-text); }
-  .yellow { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow-text); }
-  .red    { background: var(--red-bg);    border-color: var(--red-border);    color: var(--red-text); }
-  .placeholder { color: var(--muted); font-style: italic; }
-  footer { color: var(--muted); font-size: .85rem; margin-top: 32px; }
-</style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-size: 1.6rem; margin: 0 0 6px; color: var(--accent); }
+    h2 { font-size: 1.1rem; margin: 0 0 12px; }
+    .lead { color: var(--muted); margin: 0 0 24px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field > label, legend { display: block; font-weight: 600; margin-bottom: 6px; padding: 0; }
+    fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+    select, input[type=date] { width: 100%; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+    .radios { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .radios label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .radios input { width: 18px; height: 18px; accent-color: var(--accent); }
+    .deadlines { list-style: none; padding: 0; margin: 0; }
+    .deadlines li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .deadlines li:last-child { border-bottom: 0; }
+    .deadlines strong { white-space: nowrap; }
+    .hint { color: var(--muted); font-size: .9rem; margin: 10px 0 0; }
+    #ergebnis { margin-top: 16px; padding: 14px 16px; border-radius: 8px; border-left: 6px solid; }
+    #ergebnis p { margin: 0 0 8px; }
+    #ergebnis p:last-child { margin-bottom: 0; }
+    #ergebnis .ampel { font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .05em; }
+    #ergebnis.gruen { background: var(--green-bg); border-color: var(--green); }
+    #ergebnis.gelb  { background: var(--yellow-bg); border-color: var(--yellow); }
+    #ergebnis.rot   { background: var(--red-bg); border-color: var(--red); }
+    #ergebnis.gruen .ampel { color: var(--green); }
+    #ergebnis.gelb .ampel  { color: var(--yellow); }
+    #ergebnis.rot .ampel   { color: var(--red); }
+    .platzhalter { color: var(--muted); font-style: italic; margin: 0; }
+    footer { color: var(--muted); font-size: .85rem; margin-top: 32px; }
+  </style>
 </head>
 <body>
 <main>
@@ -74,45 +53,49 @@
   <p class="lead">Heidelberg School of Education · Master of Education: Wann musst Du Deine Masterarbeit anmelden und abgeben, damit Du im Januar ins Referendariat starten kannst?</p>
 
   <div class="card">
-    <label for="option">Wie möchtest Du ins Referendariat starten?</label>
-    <select id="option">
-      <option value="regulaer">Regulär ins Ref starten</option>
-      <option value="gasthoerer">Als Gasthörer:in ins Ref starten</option>
-    </select>
+    <div class="field">
+      <label for="option">Wie möchtest Du ins Referendariat starten?</label>
+      <select id="option">
+        <option value="regulaer">Regulär ins Ref starten</option>
+        <option value="gasthoerer">Als Gasthörer:in ins Ref starten</option>
+      </select>
+    </div>
   </div>
 
   <!-- Option 1: regulär -->
-  <section id="view-regulaer">
+  <section id="bereich-regulaer">
     <div class="card">
-      <h2>Deine Fristen für einen regulären Start im Januar <span id="ref-year"></span></h2>
+      <h2>Deine Fristen für einen regulären Start im Januar <span id="ref-jahr"></span></h2>
       <ul class="deadlines">
-        <li><span>Frist Anmeldung Masterarbeit</span><strong id="d-anmeldung"></strong></li>
-        <li><span>Frist Abgabe Masterarbeit</span><strong id="d-abgabe"></strong></li>
-        <li><span>Frist Einreichung Abschlussdokumente beim Regierungspräsidium</span><strong id="d-rp"></strong></li>
+        <li><span>Frist Anmeldung Masterarbeit</span><strong id="frist-anmeldung"></strong></li>
+        <li><span>Frist Abgabe Masterarbeit</span><strong id="frist-abgabe"></strong></li>
+        <li><span>Frist Einreichung Abschlussdokumente beim Regierungspräsidium</span><strong id="frist-rp"></strong></li>
       </ul>
-      <p class="hint">Die Abgabefrist ergibt sich aus der RP-Frist minus 12 Wochen: bis zu 6 Wochen Bewertungszeit der Prüfer:innen plus bis zu 6 Wochen Bearbeitungszeit des Prüfungsamts.</p>
+      <p class="hint">Die Abgabefrist ist die RP-Frist minus 12 Wochen: bis zu 6 Wochen Bewertungszeit der Prüfer:innen plus bis zu 6 Wochen Bearbeitungszeit des Prüfungsamts.</p>
     </div>
 
     <div class="card">
-      <h2>Wann gibst Du Deine Masterarbeit ab?</h2>
-      <label for="in-abgabe">Geplantes Abgabedatum</label>
-      <input type="date" id="in-abgabe">
-      <div class="result" id="out-abgabe" aria-live="polite"></div>
-    </div>
-
-    <div class="card">
-      <h2>Wann meldest Du Deine Masterarbeit an?</h2>
-      <label for="in-anmeldung">Geplantes Anmeldedatum</label>
-      <input type="date" id="in-anmeldung">
-      <div class="result" id="out-anmeldung" aria-live="polite"></div>
+      <h2>Rechne Deine Frist aus</h2>
+      <fieldset>
+        <legend>Was möchtest Du eingeben?</legend>
+        <div class="radios">
+          <label><input type="radio" name="art" value="anmeldung" checked> Anmeldedatum</label>
+          <label><input type="radio" name="art" value="abgabe"> Abgabedatum</label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="datum" id="datum-label">Wann meldest Du Deine Masterarbeit an?</label>
+        <input type="date" id="datum">
+      </div>
+      <div id="ergebnis" aria-live="polite" hidden></div>
     </div>
   </section>
 
   <!-- Option 2: Gasthörer (Inhalte folgen) -->
-  <section id="view-gasthoerer" hidden>
+  <section id="bereich-gasthoerer" hidden>
     <div class="card">
       <h2>Als Gasthörer:in ins Ref starten</h2>
-      <p class="placeholder">Die Informationen zu dieser Option folgen in Kürze.</p>
+      <p class="platzhalter">Die Informationen zu dieser Option folgen in Kürze.</p>
     </div>
   </section>
 
@@ -122,140 +105,6 @@
   </footer>
 </main>
 
-<script>
-  // ---- Konfiguration --------------------------------------------------------
-  const CONFIG = {
-    rpFrist: { month: 12, day: 15 },   // Einreichung Abschlussdokumente beim RP
-    pruefWochen: 12,                   // 6 Wochen Bewertung + 6 Wochen Prüfungsamt
-    kulanzEnde: { month: 10, day: 1 }, // letzter Tag im gelben Bereich
-    bearbeitungWochen: 17,             // Bearbeitungszeit Masterarbeit
-  };
-
-  // ---- Datumshelfer (UTC, damit Zeitumstellung nichts verschiebt) -----------
-  const DAY = 24 * 60 * 60 * 1000;
-  const mkDate = (y, m, d) => new Date(Date.UTC(y, m - 1, d));
-  const addDays = (date, n) => new Date(date.getTime() + n * DAY);
-  const diffDays = (a, b) => Math.round((a - b) / DAY);
-  const parseInput = (v) => { if (!v) return null; const [y, m, d] = v.split('-').map(Number); return mkDate(y, m, d); };
-  const fmt = (date) => date.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-  const fmtShort = (date) => date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', timeZone: 'UTC' });
-
-  function fristen(year) {
-    const rp = mkDate(year, CONFIG.rpFrist.month, CONFIG.rpFrist.day);
-    const abgabeGruen = addDays(rp, -7 * CONFIG.pruefWochen);
-    const abgabeGelb = mkDate(year, CONFIG.kulanzEnde.month, CONFIG.kulanzEnde.day);
-    const bearbeitung = 7 * CONFIG.bearbeitungWochen;
-    return {
-      year, rp, abgabeGruen, abgabeGelb, bearbeitung,
-      anmeldungGruen: addDays(abgabeGruen, -bearbeitung),
-      anmeldungGelb: addDays(abgabeGelb, -bearbeitung),
-    };
-  }
-
-  function ampel(abgabe, f) {
-    if (abgabe <= f.abgabeGruen) return 'green';
-    if (abgabe <= f.abgabeGelb) return 'yellow';
-    return 'red';
-  }
-
-  function dauer(tage) {
-    const w = Math.floor(tage / 7), d = tage % 7;
-    const teile = [];
-    if (w) teile.push(w + (w === 1 ? ' Woche' : ' Wochen'));
-    if (d) teile.push(d + (d === 1 ? ' Tag' : ' Tage'));
-    return `${tage} ${tage === 1 ? 'Tag' : 'Tage'}` + (w ? ` (${teile.join(' und ')})` : '');
-  }
-
-  const LABEL = { green: 'Grüner Bereich', yellow: 'Gelber Bereich', red: 'Roter Bereich' };
-
-  function show(el, color, paragraphs) {
-    el.className = `result show ${color}`;
-    el.innerHTML = `<p class="tag">${LABEL[color]}</p>` + paragraphs.map(p => `<p>${p}</p>`).join('');
-  }
-
-  // ---- Übersicht ------------------------------------------------------------
-  function refYearFromToday() {
-    const t = new Date();
-    const today = mkDate(t.getFullYear(), t.getMonth() + 1, t.getDate());
-    const f = fristen(today.getUTCFullYear());
-    return today > f.rp ? f.year + 1 : f.year;
-  }
-
-  function renderOverview() {
-    const f = fristen(refYearFromToday());
-    document.getElementById('ref-year').textContent = f.year + 1;
-    document.getElementById('d-anmeldung').textContent = fmt(f.anmeldungGruen);
-    document.getElementById('d-abgabe').textContent = fmt(f.abgabeGruen);
-    document.getElementById('d-rp').textContent = fmt(f.rp);
-  }
-
-  // ---- Eingabe Abgabedatum --------------------------------------------------
-  function renderAbgabe() {
-    const el = document.getElementById('out-abgabe');
-    const abgabe = parseInput(document.getElementById('in-abgabe').value);
-    if (!abgabe) { el.className = 'result'; return; }
-    const f = fristen(abgabe.getUTCFullYear());
-    const rp = fmtShort(f.rp);
-    const color = ampel(abgabe, f);
-    if (color === 'green') {
-      show(el, color, [`Bis ${rp} erhältst Du Deine Abschlussdokumente.`]);
-    } else if (color === 'yellow') {
-      show(el, color, [
-        `Bis ${rp} kannst Du eine kostenpflichtige Bestehensbescheinigung erhalten.`,
-        `Gib Deine Masterarbeit besser früher ab (spätestens am ${fmt(f.abgabeGruen)}), um bis ${rp} bereits Deine Abschlussdokumente zu erhalten.`,
-      ]);
-    } else {
-      show(el, color, [
-        `Wir können leider nicht garantieren, dass bis ${rp} Dein Abschluss über eine kostenpflichtige Bestehensbescheinigung bestätigt werden kann.`,
-        `Bitte gib Deine Masterarbeit früher ab (für Deine Abschlussdokumente spätestens am ${fmt(f.abgabeGruen)}, für eine Bestehensbescheinigung spätestens am ${fmt(f.abgabeGelb)}).`,
-      ]);
-    }
-  }
-
-  // ---- Eingabe Anmeldedatum -------------------------------------------------
-  function renderAnmeldung() {
-    const el = document.getElementById('out-anmeldung');
-    const anmeldung = parseInput(document.getElementById('in-anmeldung').value);
-    if (!anmeldung) { el.className = 'result'; return; }
-    const f = fristen(anmeldung.getUTCFullYear());
-    const rp = fmtShort(f.rp);
-    const abgabe = addDays(anmeldung, f.bearbeitung);
-    const color = ampel(abgabe, f);
-    const kuerzen = diffDays(abgabe, f.abgabeGruen);
-    const voll = `Du hast volle ${CONFIG.bearbeitungWochen} Wochen Bearbeitungszeit für Deine Masterarbeit`;
-    const verkuerzen = `Wenn Du Deine Abschlussdokumente bis ${rp} erhalten möchtest, verkürze Deine Bearbeitungszeit um ${dauer(kuerzen)}, also auf eine Abgabe spätestens am ${fmt(f.abgabeGruen)}.`;
-    const gast = `Checke zudem die Option „Als Gasthörer:in ins Ref starten“.`;
-
-    if (color === 'green') {
-      show(el, color, [`${voll}. Du musst die Masterarbeit spätestens am <strong>${fmt(abgabe)}</strong> abgeben.`]);
-    } else if (color === 'yellow') {
-      show(el, color, [
-        `Wenn Du Deine vollen ${CONFIG.bearbeitungWochen} Wochen Bearbeitungszeit nutzen möchtest, ist Dein Abgabedatum der <strong>${fmt(abgabe)}</strong>. Bis ${rp} kannst Du dann eine kostenpflichtige Bestehensbescheinigung erhalten.`,
-        verkuerzen,
-        gast,
-      ]);
-    } else {
-      show(el, color, [
-        `Wenn Du Deine vollen ${CONFIG.bearbeitungWochen} Wochen Bearbeitungszeit nutzen möchtest, ist Dein Abgabedatum der <strong>${fmt(abgabe)}</strong>.`,
-        `<strong>Achtung:</strong> Bei diesem Abgabedatum können wir leider nicht garantieren, dass Du bis ${rp} eine kostenpflichtige Bestehensbescheinigung erhältst und ab Januar regulär ins Ref kannst.`,
-        verkuerzen,
-        gast,
-      ]);
-    }
-  }
-
-  // ---- Dropdown -------------------------------------------------------------
-  function renderOption() {
-    const v = document.getElementById('option').value;
-    document.getElementById('view-regulaer').hidden = v !== 'regulaer';
-    document.getElementById('view-gasthoerer').hidden = v !== 'gasthoerer';
-  }
-
-  document.getElementById('option').addEventListener('change', renderOption);
-  document.getElementById('in-abgabe').addEventListener('input', renderAbgabe);
-  document.getElementById('in-anmeldung').addEventListener('input', renderAnmeldung);
-  renderOverview();
-  renderOption();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
