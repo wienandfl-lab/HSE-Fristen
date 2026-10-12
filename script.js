@@ -84,13 +84,6 @@ function fristen(jahr) {
   };
 }
 
-// Welcher Ref-Start ist mit diesem Abgabedatum gemeint? Der nächste 15.12. ab der Abgabe.
-// Wer z. B. am 20.12.2026 abgibt, kann regulär erst im Januar 2028 starten.
-function fristenFuerAbgabe(abgabe) {
-  const f = fristen(abgabe.getFullYear());
-  return abgabe > f.rp ? fristen(f.jahr + 1) : f;
-}
-
 function ampel(abgabe, f) {
   if (abgabe <= f.abgabeGruen) return 'gruen';
   if (abgabe <= f.abgabeGelb) return 'gelb';
@@ -112,6 +105,9 @@ function texteAbgabe(abgabe, f) {
       `Gib Deine Masterarbeit besser früher ab (spätestens am ${lang(f.abgabeGruen)}), um bis ${rp} bereits Deine Abschlussdokumente zu erhalten.`,
     ]];
   }
+  if (abgabe > f.rp) {
+    return [farbe, [`Mit diesem Abgabedatum ist ein regulärer Start im Januar ${f.jahr + 1} nicht mehr möglich. Wähle oben einen späteren Ref-Start oder checke die Option „Als Gasthörer:in ins Ref starten“.`]];
+  }
   return [farbe, [
     `Wir können leider nicht garantieren, dass bis ${rp} Dein Abschluss über eine kostenpflichtige Bestehensbescheinigung bestätigt werden kann.`,
     `Bitte gib Deine Masterarbeit früher ab: spätestens am ${lang(f.abgabeGruen)} für Deine Abschlussdokumente, spätestens am ${lang(f.abgabeGelb)} für eine Bestehensbescheinigung.`,
@@ -126,6 +122,9 @@ function texteAnmeldung(anmeldung, f) {
   const gast = 'Checke zudem die Option „Als Gasthörer:in ins Ref starten“.';
   const voll = `Wenn Du Deine vollen ${BEARBEITUNG_WOCHEN} Wochen Bearbeitungszeit nutzen möchtest, ist Dein Abgabedatum der <strong>${lang(abgabe)}</strong>.`;
 
+  if (anmeldung >= f.abgabeGruen) {
+    return ['rot', [`Mit dieser Anmeldung ist ein regulärer Start im Januar ${f.jahr + 1} nicht mehr möglich, auch nicht mit verkürzter Bearbeitungszeit. Wähle oben einen späteren Ref-Start oder checke die Option „Als Gasthörer:in ins Ref starten“.`]];
+  }
   if (farbe === 'gruen') {
     return [farbe, [`Du hast noch volle ${BEARBEITUNG_WOCHEN} Wochen Bearbeitungszeit für Deine Masterarbeit. Du musst die Masterarbeit spätestens am <strong>${lang(abgabe)}</strong> abgeben.`]];
   }
@@ -153,6 +152,7 @@ const el = {
   option: document.getElementById('option'),
   bereichRegulaer: document.getElementById('bereich-regulaer'),
   bereichGasthoerer: document.getElementById('bereich-gasthoerer'),
+  refStart: document.getElementById('ref-start'),
   datum: document.getElementById('datum'),
   datumLabel: document.getElementById('datum-label'),
   ergebnis: document.getElementById('ergebnis'),
@@ -162,11 +162,25 @@ function gewaehlteArt() {
   return document.querySelector('input[name="art"]:checked').value;
 }
 
-function zeigeUebersicht() {
-  // Ist die gelbe Abgabefrist in diesem Jahr schon vorbei, zeigen wir die Fristen fürs nächste Jahr.
+// Füllt die Auswahl mit den nächsten drei Ref-Starts, deren RP-Frist noch nicht vorbei ist.
+function fuelleRefStart() {
   const heute = new Date();
-  let f = fristen(heute.getFullYear());
-  if (heute > f.abgabeGelb) f = fristen(f.jahr + 1);
+  let jahr = heute.getFullYear();
+  if (heute > fristen(jahr).rp) jahr += 1;
+  for (let i = 0; i < 3; i++) {
+    const option = document.createElement('option');
+    option.value = jahr + i;               // Jahr der Fristen (Mai bis Dezember)
+    option.textContent = `Januar ${jahr + i + 1}`;
+    el.refStart.appendChild(option);
+  }
+}
+
+function gewaehlteFristen() {
+  return fristen(Number(el.refStart.value));
+}
+
+function zeigeUebersicht() {
+  const f = gewaehlteFristen();
   document.getElementById('ref-jahr').textContent = f.jahr + 1;
   document.getElementById('frist-anmeldung').textContent = lang(f.anmeldungGruen);
   document.getElementById('frist-abgabe').textContent = lang(f.abgabeGruen);
@@ -185,8 +199,7 @@ function berechne() {
     return;
   }
 
-  const abgabe = art === 'anmeldung' ? plusTage(eingabe, 7 * BEARBEITUNG_WOCHEN) : eingabe;
-  const f = fristenFuerAbgabe(abgabe);
+  const f = gewaehlteFristen();
   const [farbe, absaetze] = art === 'anmeldung' ? texteAnmeldung(eingabe, f) : texteAbgabe(eingabe, f);
 
   el.ergebnis.className = farbe;
@@ -202,6 +215,10 @@ function zeigeOption() {
 }
 
 el.option.addEventListener('change', zeigeOption);
+el.refStart.addEventListener('change', () => {
+  zeigeUebersicht();
+  berechne();
+});
 el.datum.addEventListener('input', berechne);
 el.datum.addEventListener('change', berechne);
 // Beim Wechsel zwischen Anmeldung und Abgabe das Datum leeren, damit es nicht falsch gedeutet wird.
@@ -210,6 +227,7 @@ document.querySelectorAll('input[name="art"]').forEach(r => r.addEventListener('
   berechne();
 }));
 
+fuelleRefStart();
 zeigeUebersicht();
 zeigeOption();
 berechne();
