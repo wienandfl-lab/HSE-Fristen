@@ -28,11 +28,25 @@ function tageZwischen(spaeter, frueher) {
   return Math.round((spaeter - frueher) / TAG_MS);
 }
 
+// Liest das Datum aus dem Eingabefeld. Normal kommt "2026-09-22"; ältere Browser
+// ohne Kalenderfeld liefern, was getippt wurde, z. B. "22.09.2026".
 function ausEingabe(wert) {
   if (!wert) return null;
-  const [j, m, t] = wert.split('-').map(Number);
-  if (!j || !m || !t) return null;
-  return datum(j, m, t);
+  let j, m, t;
+  let treffer = wert.trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (treffer) {
+    [j, m, t] = [treffer[1], treffer[2], treffer[3]].map(Number);
+  } else {
+    treffer = wert.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (!treffer) return null;
+    [t, m, j] = [treffer[1], treffer[2], treffer[3]].map(Number);
+  }
+  // Beim Eintippen des Jahres kommen kurz Werte wie 0002 oder 0202 an: ignorieren.
+  if (j < 2000 || j > 2100) return null;
+  const d = datum(j, m, t);
+  // Ungültige Daten wie 31.02. abfangen
+  if (d.getMonth() !== m - 1 || d.getDate() !== t) return null;
+  return d;
 }
 
 function lang(d) {
@@ -68,6 +82,13 @@ function fristen(jahr) {
     anmeldungGruen: plusTage(abgabeGruen, -7 * BEARBEITUNG_WOCHEN),  // 26.5.
     anmeldungGelb: plusTage(abgabeGelb, -7 * BEARBEITUNG_WOCHEN),    // 4.6.
   };
+}
+
+// Welcher Ref-Start ist mit diesem Abgabedatum gemeint? Der nächste 15.12. ab der Abgabe.
+// Wer z. B. am 20.12.2026 abgibt, kann regulär erst im Januar 2028 starten.
+function fristenFuerAbgabe(abgabe) {
+  const f = fristen(abgabe.getFullYear());
+  return abgabe > f.rp ? fristen(f.jahr + 1) : f;
 }
 
 function ampel(abgabe, f) {
@@ -164,11 +185,13 @@ function berechne() {
     return;
   }
 
-  const f = fristen(eingabe.getFullYear());
+  const abgabe = art === 'anmeldung' ? plusTage(eingabe, 7 * BEARBEITUNG_WOCHEN) : eingabe;
+  const f = fristenFuerAbgabe(abgabe);
   const [farbe, absaetze] = art === 'anmeldung' ? texteAnmeldung(eingabe, f) : texteAbgabe(eingabe, f);
 
   el.ergebnis.className = farbe;
-  el.ergebnis.innerHTML = `<p class="ampel">${AMPEL_NAME[farbe]}</p>` + absaetze.map(a => `<p>${a}</p>`).join('');
+  el.ergebnis.innerHTML = `<p class="ampel">${AMPEL_NAME[farbe]} · Ref-Start Januar ${f.jahr + 1}</p>`
+    + absaetze.map(a => `<p>${a}</p>`).join('');
   el.ergebnis.hidden = false;
 }
 
